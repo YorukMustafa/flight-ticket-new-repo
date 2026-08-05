@@ -1,11 +1,13 @@
 package com.flightapp.flightticketsystem.repository;
 
-import com.flightapp.flightticketsystem.entities.Users;
+import com.flightapp.flightticketsystem.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface IUsersRepository extends JpaRepository<Users, Long> {
-    Optional<Users> findByEmail(String email);
+public interface UserRepository extends JpaRepository<User, Integer> {
+
+    Optional<User> findByEmail(String email);
+
     boolean existsByEmail(String email);
 }

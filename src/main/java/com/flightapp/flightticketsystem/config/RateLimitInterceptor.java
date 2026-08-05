@@ -23,7 +23,6 @@ public class RateLimitInterceptor implements HandlerInterceptor {
     }
 
     private Bucket newBucket(String key) {
-        // Allows 5 requests per minute per IP for the login API
         Bandwidth limit = Bandwidth.classic(5, Refill.greedy(5, Duration.ofMinutes(1)));
         return Bucket.builder().addLimit(limit).build();
     }

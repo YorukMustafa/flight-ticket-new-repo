@@ -1,6 +1,7 @@
 package com.flightapp.flightticketsystem.controller;
 
-import com.flightapp.flightticketsystem.jwt.AuthRequest;
+import com.flightapp.flightticketsystem.jwt.LoginRequest;
+import com.flightapp.flightticketsystem.jwt.RegisterRequest;
 import com.flightapp.flightticketsystem.jwt.AuthResponse;
 import com.flightapp.flightticketsystem.service.IAuthService;
 import jakarta.validation.Valid;
@@ -19,12 +20,12 @@ public class AuthController {
     private final IAuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@Valid @RequestBody AuthRequest request) {
+    public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authService.register(request));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest request) {
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
     }
 }

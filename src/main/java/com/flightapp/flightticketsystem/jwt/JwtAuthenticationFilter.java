@@ -36,14 +36,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        token = authHeader.substring(7);
-        userName = jwtService.getUsernameByToken(token);
+        try {
+            token = authHeader.substring(7);
+            userName = jwtService.getUsernameByToken(token);
 
-        if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
 
-            UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
-
-            try {
                 if (!jwtService.isTokenExpired(token)) {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userDetails, null, userDetails.getAuthorities());
@@ -51,13 +50,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     authToken.setDetails(userDetails);
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
-            } catch (io.jsonwebtoken.ExpiredJwtException e) {
-                System.out.println("Token suresi dolmuştur: " + e.getMessage());
-            } catch (io.jsonwebtoken.security.SignatureException e) {
-                System.out.println("Token imzası geçersiz : " + e.getMessage());
-            } catch (Exception e) {
-                System.out.println("Token doğrulanırken  bir hata oluştu: " + e.getMessage());
             }
+        } catch (io.jsonwebtoken.ExpiredJwtException e) {
+            System.out.println("Token suresi dolmuştur: " + e.getMessage());
+        } catch (io.jsonwebtoken.security.SignatureException e) {
+            System.out.println("Token imzası geçersiz : " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Token doğrulanırken  bir hata oluştu: " + e.getMessage());
         }
 
         filterChain.doFilter(request, response);

@@ -23,7 +23,6 @@ public class JwtService {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claimsMap = new HashMap<>();
-        // Note: You can extract roles dynamically from userDetails later
         claimsMap.put("Role", "Admin");
 
         return Jwts.builder()
