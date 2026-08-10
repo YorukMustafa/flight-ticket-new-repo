@@ -10,9 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Getter
@@ -47,18 +45,17 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Ticket> tickets;
 
-    @ManyToMany(fetch = FetchType.EAGER) //kullanıcı sisteme giriş yaptığında rollerinin de anında veritabanından çekilmesini sağlar
+    @ManyToMany(fetch = FetchType.EAGER)
+    //kullanıcı sisteme giriş yaptığında rollerinin de anında veritabanından çekilmesini sağlar
     @JoinTable(
             name = "user_roles", // köprü tablonun adı
-            joinColumns = @JoinColumn(name = "user_id"), // bu tablodan gfidecek olan id
+            joinColumns = @JoinColumn(name = "user_id"), // bu tablodan gidecek olan id
             inverseJoinColumns = @JoinColumn(name = "role_id") //karşı tablodan gelecek id
     )
-    private List<Role> roles = new ArrayList<>();
+    private Set<Role> roles = new HashSet<>(); //aynı rolün iki kez eklenmesini engeller
 
 
-    // ==========================================
-    // SPRING SECURITY TARAFINDAN ZORUNLU İSTENEN METODLAR
-    // ==========================================
+
 
     @Override
     public java.util.Collection<? extends org.springframework.security.core.GrantedAuthority> getAuthorities() {
@@ -66,33 +63,34 @@ public class User implements UserDetails {
             return Collections.emptyList();
         }
         return roles.stream()
-                .map(role -> new org.springframework.security.core.authority.SimpleGrantedAuthority(role.getRoleName()))
+                .map(role -> new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_" + role.getRoleName().toUpperCase()))
                 .toList();
     }
 
     @Override
     public String getUsername() {
-        return this.email; // Sistemde kullanıcı adı olarak e-posta kullanılıyor
+        return this.email; //SpringSecurity kullanıcıyı tanımak için bir kullanıcı adı arar biz sisteme kullanıcı adı ile değil e-posta ile girş yapıyoruz
+        //oyüzden email döndürüyoruz
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return true;    //burda hesabın süresinin asla dolmadığını söylüyoruz
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return true;   //diyerek tüm hesapların her zaman açık olduğunu belirtiyoruz
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return true; //diyerek şifrenin her zaman geçerli olduğunu söylüyoruz
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return true; //diyerek hesapları aktif hale getiriyoruz
     }
 
 }

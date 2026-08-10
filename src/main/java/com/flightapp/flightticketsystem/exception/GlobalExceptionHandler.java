@@ -6,6 +6,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -42,5 +43,18 @@ public class GlobalExceptionHandler {
         } catch (Exception e) {
             return key;
         }
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        String errorMessage = ex.getBindingResult().getAllErrors().get(0).getDefaultMessage();
+
+        if (errorMessage != null && errorMessage.startsWith("{") && errorMessage.endsWith("}")) {
+            String key = errorMessage.substring(1, errorMessage.length() - 1);
+            errorMessage = getMessage(key, null);
+        }
+
+        ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), errorMessage);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }
