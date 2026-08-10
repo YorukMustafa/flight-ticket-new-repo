@@ -39,7 +39,7 @@ public class UserMapper {
         user.setEmail(request.getEmail());
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
-        // Password will be encoded and set in the service layer
+
         return user;
     }
 }

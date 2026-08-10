@@ -7,10 +7,10 @@ import lombok.Data;
 @Data
 public class LoginRequest {
     
-    @NotBlank(message = "{error.validation}")
-    @Email(message = "{error.validation}")
+    @NotBlank(message = "{email.cannotblank}")
+    @Email(message = "{email.validation}")
     private String email;
 
-    @NotBlank(message = "{error.validation}")
+    @NotBlank(message = "{password.validation}")
     private String password;
 }

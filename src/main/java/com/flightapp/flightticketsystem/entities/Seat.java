@@ -28,6 +28,9 @@ public class Seat {
     @Column(name = "is_available")
     private boolean isAvailable;
 
+    @Column(name = "price")
+    private java.math.BigDecimal price;
+
     @OneToOne(mappedBy = "seat")
     private Ticket ticket;
 
