@@ -3,6 +3,7 @@ package com.flightapp.flightticketsystem.controller;
 import com.flightapp.flightticketsystem.dto.SeatRequestDto;
 import com.flightapp.flightticketsystem.dto.SeatResponseDto;
 import com.flightapp.flightticketsystem.service.ISeatService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +17,9 @@ public class SeatController {
 
     private final ISeatService seatService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @PostMapping("/add/seats")
-    public SeatResponseDto addSeat(@RequestBody SeatRequestDto requestDto) {
+    public SeatResponseDto addSeat(@Valid @RequestBody SeatRequestDto requestDto) {
         return seatService.addSeat(requestDto);
     }
 
@@ -27,14 +28,14 @@ public class SeatController {
         return seatService.getSeatsByFlightId(flightId);
     }
 
-    @GetMapping("/seats/available/{flightId}")
+    @GetMapping("/available/{flightId}")
     public List<SeatResponseDto> getAvailableSeatsByFlightId(@PathVariable Integer flightId) {
         return seatService.getAvailableSeatsByFlightId(flightId);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @PutMapping("/update/seats/{id}")
-    public SeatResponseDto updateSeat(@PathVariable Integer id, @RequestBody SeatRequestDto requestDto) {
+    public SeatResponseDto updateSeat(@PathVariable Integer id, @Valid @RequestBody SeatRequestDto requestDto) {
         return seatService.updateSeat(id, requestDto);
     }
 

@@ -5,6 +5,7 @@ import com.flightapp.flightticketsystem.dto.SeatResponseDto;
 import com.flightapp.flightticketsystem.entities.Seat;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,9 +42,20 @@ public class SeatMapper {
         if (seats == null) {
             return null;
         }
-        return seats.stream().map(this::toDto).collect(Collectors.toList());
-    }
 
+        List<SeatResponseDto> dtoList = new ArrayList<>();
+
+        for (Seat seat : seats) {
+
+
+            SeatResponseDto convertedDto = toDto(seat);
+
+
+            dtoList.add(convertedDto);
+        }
+
+        return dtoList;
+    }
     public void updateEntityFromDto(SeatRequestDto requestDto, Seat seat) {
         if (requestDto == null || seat == null) {
             return;
