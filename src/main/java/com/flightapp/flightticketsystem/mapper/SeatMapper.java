@@ -20,7 +20,6 @@ public class SeatMapper {
         seat.setSeatType(requestDto.getSeatType());
         seat.setAvailable(requestDto.isAvailable());
         seat.setPrice(requestDto.getPrice());
-        // flight will be set in the service layer
         return seat;
     }
 
@@ -53,7 +52,6 @@ public class SeatMapper {
         seat.setSeatType(requestDto.getSeatType());
         seat.setAvailable(requestDto.isAvailable());
         seat.setPrice(requestDto.getPrice());
-        // flight update handled in service layer
     }
 }
 
