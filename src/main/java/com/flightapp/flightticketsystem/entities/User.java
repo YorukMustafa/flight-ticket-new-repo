@@ -63,7 +63,7 @@ public class User implements UserDetails {
             return Collections.emptyList();
         }
         return roles.stream()
-                .map(role -> new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_" + role.getRoleName().toUpperCase()))
+                .map(role -> new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_" + role.getRoleName().toUpperCase(java.util.Locale.ENGLISH)))
                 .toList();
     }
 

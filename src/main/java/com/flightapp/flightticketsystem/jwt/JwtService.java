@@ -23,13 +23,19 @@ public class JwtService {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claimsMap = new HashMap<>();
-        claimsMap.put("Role", "Admin");
+
+
+        java.util.List<String> roles = userDetails.getAuthorities().stream()
+                .map(org.springframework.security.core.GrantedAuthority::getAuthority)
+                .toList();
+
+        claimsMap.put("roles", roles);
 
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .addClaims(claimsMap)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 2))) // 2 hours
+                .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 2)))
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
