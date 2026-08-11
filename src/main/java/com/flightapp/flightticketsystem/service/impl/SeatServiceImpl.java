@@ -34,7 +34,7 @@ public class  SeatServiceImpl implements ISeatService {
 
     @Override
     public List<SeatResponseDto> getSeatsByFlightId(Integer flightId) {
-        // Just verify flight exists
+
         flightRepository.findById(flightId)
                 .orElseThrow(() -> new BaseException("error.flight_not_found"));
         List<Seat> seats = seatRepository.findByFlightId(flightId);
