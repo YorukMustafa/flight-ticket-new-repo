@@ -17,7 +17,7 @@ public class SeatController {
 
     private final ISeatService seatService;
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add/seats")
     public SeatResponseDto addSeat(@Valid @RequestBody SeatRequestDto requestDto) {
         return seatService.addSeat(requestDto);
@@ -33,7 +33,7 @@ public class SeatController {
         return seatService.getAvailableSeatsByFlightId(flightId);
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update/seats/{id}")
     public SeatResponseDto updateSeat(@PathVariable Integer id, @Valid @RequestBody SeatRequestDto requestDto) {
         return seatService.updateSeat(id, requestDto);

@@ -37,6 +37,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(org.springframework.orm.ObjectOptimisticLockingFailureException.class)
+    public ResponseEntity<ErrorResponse> handleOptimisticLockingFailure(org.springframework.orm.ObjectOptimisticLockingFailureException ex) {
+        String message = getMessage("error.seat_already_sold", null);
+        ErrorResponse response = new ErrorResponse(HttpStatus.CONFLICT.value(), message);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
     private String getMessage(String key, Object[] args) {
         try {
             return messageSource.getMessage(key, args, LocaleContextHolder.getLocale());

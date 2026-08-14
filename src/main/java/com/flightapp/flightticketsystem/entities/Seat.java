@@ -31,6 +31,9 @@ public class Seat {
     @Column(name = "price")
     private java.math.BigDecimal price;
 
+    @Version
+    private Long version;
+
     @OneToOne(mappedBy = "seat")
     private Ticket ticket;
 
