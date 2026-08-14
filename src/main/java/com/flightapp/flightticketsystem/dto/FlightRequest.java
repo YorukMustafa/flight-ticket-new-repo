@@ -1,7 +1,6 @@
 package com.flightapp.flightticketsystem.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Data
@@ -18,9 +17,10 @@ public class FlightRequest {
     @NotBlank(message = "{error.destination_blank}")
     private String destinationPoint;
 
-    @NotNull(message = "{error.time_null}")
+    @NotBlank(message = "{error.time_null}")
     private String departureTime;
 
-    @NotNull(message = "{error.time_null}")
+    @NotBlank(message = "{error.time_null}")
     private String destinationTime;
+
 }
